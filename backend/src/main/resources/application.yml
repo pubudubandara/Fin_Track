@@ -15,20 +15,3 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
-# spring:
-#   datasource:
-#     url: ${DB_URL:jdbc:mysql://localhost:3306/finance_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-#     username: ${DB_USERNAME:root}
-#     password: ${DB_PASSWORD:1234}
-#     driver-class-name: com.mysql.cj.jdbc.Driver
-#   jpa:
-#     hibernate:
-#       ddl-auto: update
-#     show-sql: true
-#     properties:
-#       hibernate:
-#         dialect: org.hibernate.dialect.MySQLDialect
-
-# jwt:
-#   secret: ${JWT_SECRET:askdjfyaiusoasdifyoiuyrepoqup3s5d4hldkjg368dthlkdhf}
-#   expiration: ${JWT_EXPIRATION:86400000}
