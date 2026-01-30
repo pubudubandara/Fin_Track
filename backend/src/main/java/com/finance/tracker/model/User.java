@@ -4,6 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class User implements UserDetails {
     private String email;
 
     @NotBlank(message = "Username is mandatory")
+    @JsonProperty("username")
     private String username;
 
     @NotBlank(message = "Password is mandatory")
@@ -65,9 +68,16 @@ public class User implements UserDetails {
         return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
         return email; // Use email as the username for authentication
+    }
+
+    // Custom method to get the actual username field (not the email)
+    @JsonProperty("username")
+    public String getName() {
+        return username;
     }
 
 }

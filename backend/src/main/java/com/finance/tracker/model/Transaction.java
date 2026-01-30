@@ -46,8 +46,13 @@ public class Transaction {
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
-    // 3. Which Category does this transaction belong to?
+    // 3. Which Category does this transaction belong to? (Optional for INCOME)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    //4. can be group expense or personal expense
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id") // Can be nullable for personal transactions
+    private Group group;
 }
