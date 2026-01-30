@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findAllByUserOrderByDateDesc(User user);
+    List<Transaction> findAllByGroupOrderByDateDesc(com.finance.tracker.model.Group group);
 }

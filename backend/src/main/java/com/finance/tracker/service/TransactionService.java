@@ -40,9 +40,12 @@ public class TransactionService {
             throw new RuntimeException("Access denied: You do not own this wallet");
         }
 
-        // 2. Retrieve Category
-        var category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        // 2. Retrieve Category (Only required for EXPENSE transactions)
+        Category category = null;
+        if (request.getCategoryId() != null) {
+            category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+        }
 
         // 3. Update Wallet Balance (Business Logic)
         if (request.getType() == TransactionType.EXPENSE) {
@@ -113,5 +116,38 @@ public class TransactionService {
      */
     public List<Transaction> getMyTransactions(User user) {
         return transactionRepository.findAllByUserOrderByDateDesc(user);
+    }
+
+    /**
+     * Delete a transaction - only the creator can delete it.
+     * Also reverts the wallet balance changes.
+     */
+    @Transactional
+    public void deleteTransaction(Long transactionId, User user) {
+        // Find the transaction
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        // Security check: Only the creator can delete
+        if (!transaction.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Access denied: You can only delete your own transactions");
+        }
+
+        // Delete expense splits first (if any)
+        expenseSplitRepository.deleteAll(
+            expenseSplitRepository.findAllByTransaction(transaction)
+        );
+
+        // Revert wallet balance
+        Wallet wallet = transaction.getWallet();
+        if (transaction.getType() == TransactionType.EXPENSE) {
+            wallet.setBalance(wallet.getBalance() + transaction.getAmount());
+        } else if (transaction.getType() == TransactionType.INCOME) {
+            wallet.setBalance(wallet.getBalance() - transaction.getAmount());
+        }
+        walletRepository.save(wallet);
+
+        // Delete the transaction
+        transactionRepository.delete(transaction);
     }
 }
