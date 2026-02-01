@@ -1,8 +1,8 @@
 package com.finance.tracker.auth;
 
 import com.finance.tracker.config.JwtService;
-import com.finance.tracker.model.Role;
 import com.finance.tracker.model.User;
+import com.finance.tracker.model.enums.Role;
 import com.finance.tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
