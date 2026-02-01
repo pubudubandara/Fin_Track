@@ -1,4 +1,4 @@
-package com.finance.tracker.model;
+package com.finance.tracker.model.enums;
 
 public enum Role {
     USER,
