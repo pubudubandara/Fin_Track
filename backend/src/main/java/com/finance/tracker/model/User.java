@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.finance.tracker.model.enums.Role;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
